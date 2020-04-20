@@ -1,0 +1,5 @@
+# ignore bin folder with spark and kafka
+bin
+
+# ignore data file
+police-department-calls-for-service.json
