@@ -10,16 +10,21 @@ class ProducerServer(KafkaProducer):
         self.input_file = input_file
         self.topic = topic
 
-    #TODO we're generating a dummy data
+    #TODO (done) we're generating a dummy data
     def generate_data(self):
-        with open(self.input_file) as f:
-            for line in f:
+        print("load input file")
+        with open(self.input_file, "r") as f:
+            json_data = json.loads(f.read())  # this fixes the input since it is an array of multiline json objects
+            for line in json_data:
+                print(f"send message {line}")
                 message = self.dict_to_binary(line)
                 # TODO send the correct data
-                self.send()
-                time.sleep(1)
+                self.send(
+                    topic="org.sfc.crimes",
+                    value=message
+                )
+                # time.sleep(1)
 
-    # TODO fill this in to return the json dictionary to binary
+    # TODO (done) fill this in to return the json dictionary to binary
     def dict_to_binary(self, json_dict):
-        return 
-        
+        return json.dumps(json_dict).encode("utf-8")
